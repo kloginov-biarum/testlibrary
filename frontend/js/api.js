@@ -2,7 +2,7 @@
  * TestLibrary API client
  * Change API_BASE to point to your deployed backend.
  */
-const API_BASE = 'https://testlibrary-api.onrender.com';
+const API_BASE = 'https://testlibrary-2.onrender.com';
 
 /**
  * Centralized fetch wrapper.
