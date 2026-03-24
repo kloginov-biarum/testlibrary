@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestLibrary — Admin</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="catalog.html" class="navbar-brand">
+      <span class="logo-icon">📚</span> TestLibrary
+    </a>
+    <div class="navbar-nav">
+      <a href="catalog.html" id="nav-catalog-link">Catalog</a>
+      <a href="my-books.html" id="nav-mybooks-link">My Books</a>
+      <a href="admin.html" class="active" id="nav-admin-link">Admin</a>
+    </div>
+    <div class="navbar-end">
+      <span class="navbar-user">Logged in as <strong id="nav-username"></strong></span>
+      <button class="btn btn-outline btn-sm" id="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Admin Panel</h1>
+      <p class="page-subtitle">Manage books and view all loans</p>
+    </div>
+
+    <div id="action-alert" class="alert" style="margin-bottom:16px"></div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-books" data-testid="tab-books">Books</button>
+      <button class="tab-btn" id="tab-loans" data-testid="tab-loans">All Loans</button>
+    </div>
+
+    <!-- Books tab -->
+    <div class="tab-panel active" id="panel-books">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:16px">
+        <button class="btn btn-primary" id="add-book-btn" data-testid="add-book-btn">+ Add Book</button>
+      </div>
+
+      <!-- Add / Edit form -->
+      <div class="add-form" id="book-form-container" style="display:none">
+        <h3 id="book-form-title">Add Book</h3>
+        <input type="hidden" id="edit-book-id" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="f-title">Title *</label>
+            <input class="form-control" id="f-title" data-testid="f-title" placeholder="Book title" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-author">Author *</label>
+            <input class="form-control" id="f-author" data-testid="f-author" placeholder="Author name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-category">Category *</label>
+            <select class="form-control" id="f-category" data-testid="f-category">
+              <option value="">Select…</option>
+              <option>Fiction</option><option>Science</option><option>History</option>
+              <option>Technology</option><option>Biography</option><option>Fantasy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-isbn">ISBN</label>
+            <input class="form-control" id="f-isbn" data-testid="f-isbn" placeholder="978-0-000-00000-0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-year">Year *</label>
+            <input class="form-control" id="f-year" data-testid="f-year" type="number" placeholder="2024" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-copies">Total Copies *</label>
+            <input class="form-control" id="f-copies" data-testid="f-copies" type="number" value="3" min="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-color">Cover Color</label>
+            <input class="form-control" id="f-color" data-testid="f-color" type="color" value="#4A90D9" style="height:38px;padding:2px 6px" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="f-desc">Description</label>
+            <input class="form-control" id="f-desc" data-testid="f-desc" placeholder="Short description" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="save-book-btn" data-testid="save-book-btn">Save</button>
+          <button class="btn btn-outline" id="cancel-book-btn" data-testid="cancel-book-btn">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Books table -->
+      <div id="books-loading" class="loading-state">
+        <div class="spinner spinner-lg"></div><span>Loading…</span>
+      </div>
+      <div style="overflow-x:auto; display:none" id="books-table-wrap">
+        <table class="data-table" id="books-table" data-testid="books-table">
+          <thead>
+            <tr>
+              <th>Title</th><th>Author</th><th>Category</th>
+              <th>Year</th><th>Available</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="books-tbody"></tbody>
+        </table>
+      </div>
+      <div id="books-empty" class="empty-state" style="display:none">
+        <div class="empty-icon">📚</div>
+        <div class="empty-title">No books yet</div>
+      </div>
+    </div>
+
+    <!-- Loans tab -->
+    <div class="tab-panel" id="panel-loans">
+      <div id="loans-loading" class="loading-state">
+        <div class="spinner spinner-lg"></div><span>Loading…</span>
+      </div>
+      <div style="overflow-x:auto; display:none" id="loans-table-wrap">
+        <table class="data-table" id="loans-table" data-testid="loans-table">
+          <thead>
+            <tr>
+              <th>User</th><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="loans-tbody"></tbody>
+        </table>
+      </div>
+      <div id="loans-empty" class="empty-state" style="display:none">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No active loans</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Delete confirm modal -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Confirm Delete</span>
+        <button class="modal-close" id="delete-modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="delete-book-title"></strong>?</p>
+        <p style="margin-top:8px; font-size:0.875rem; color:var(--gray-600)">
+          This will also remove all active loans for this book.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="delete-cancel-btn">Cancel</button>
+        <button class="btn btn-danger" id="delete-confirm-btn" data-testid="delete-confirm-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestLibrary — Catalog</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="catalog.html" class="navbar-brand">
+      <span class="logo-icon">📚</span> TestLibrary
+    </a>
+    <div class="navbar-nav">
+      <a href="catalog.html" class="active" id="nav-catalog-link">Catalog</a>
+      <a href="my-books.html" id="nav-mybooks-link">My Books</a>
+      <a href="admin.html" id="nav-admin-link" style="display:none">Admin</a>
+    </div>
+    <div class="navbar-end">
+      <span class="navbar-user">Logged in as <strong id="nav-username"></strong></span>
+      <button class="btn btn-outline btn-sm" id="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Book Catalog</h1>
+      <p class="page-subtitle">Browse and borrow books from our library</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-group">
+        <input
+          class="form-control"
+          type="text"
+          id="search-input"
+          placeholder="Search by title or author…"
+          data-testid="search-input"
+        />
+        <button class="btn btn-primary" id="search-btn" data-testid="search-btn">Search</button>
+        <button class="btn btn-outline" id="clear-search-btn" data-testid="clear-search-btn">Clear</button>
+      </div>
+
+      <select class="form-control" id="category-filter" data-testid="category-filter" style="max-width:180px">
+        <option value="">All Categories</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Science">Science</option>
+        <option value="History">History</option>
+        <option value="Technology">Technology</option>
+        <option value="Biography">Biography</option>
+        <option value="Fantasy">Fantasy</option>
+      </select>
+
+      <select class="form-control" id="sort-select" data-testid="sort-select" style="max-width:180px">
+        <option value="title_asc">Title A→Z</option>
+        <option value="title_desc">Title Z→A</option>
+        <option value="author_asc">Author A→Z</option>
+        <option value="author_desc">Author Z→A</option>
+      </select>
+    </div>
+
+    <div id="toolbar-alert" class="alert alert-error" style="margin-bottom:16px"></div>
+
+    <p class="books-meta" id="books-count"></p>
+
+    <div id="loading-state" class="loading-state">
+      <div class="spinner spinner-lg"></div>
+      <span>Loading books…</span>
+    </div>
+
+    <div id="empty-state" class="empty-state" style="display:none">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">No books found</div>
+      <div class="empty-desc">Try a different search or category</div>
+    </div>
+
+    <div id="books-grid" class="books-grid" style="display:none"></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/catalog.js"></script>
+</body>
+</html>
