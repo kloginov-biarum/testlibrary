@@ -101,11 +101,21 @@
       ? `<span class="book-copies none">0 / ${book.total_copies} available</span>`
       : `<span class="book-copies">${book.available_copies} / ${book.total_copies} available</span>`;
 
+    const coverHtml = isProblemUser
+      ? `<div class="book-cover" style="background:${coverColor}"><span class="book-cover-icon">${categoryIcon(book.category)}</span></div>`
+      : `<div class="book-cover book-cover-img" style="background:${coverColor}">
+           <img
+             src="https://covers.openlibrary.org/b/isbn/${encodeURIComponent(book.isbn)}-M.jpg"
+             alt="${escHtml(book.title)}"
+             loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display=''"
+           />
+           <span class="book-cover-icon" style="display:none">${categoryIcon(book.category)}</span>
+         </div>`;
+
     return `
       <article class="book-card" data-book-id="${book.book_id}" data-index="${index}">
-        <div class="book-cover" style="background:${coverColor}">
-          <span class="book-cover-icon">${categoryIcon(book.category)}</span>
-        </div>
+        ${coverHtml}
         <div class="book-body">
           <div class="book-title">${escHtml(book.title)}</div>
           <div class="book-author">${escHtml(book.author)}</div>
