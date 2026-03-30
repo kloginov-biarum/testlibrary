@@ -2,7 +2,11 @@
  * TestLibrary API client
  * Change API_BASE to point to your deployed backend.
  */
-const API_BASE = 'https://testlibrary-2.onrender.com';
+// Empty string = same origin (Docker via nginx proxy)
+// Render URL = GitHub Pages deployment
+const API_BASE = window.location.hostname === 'localhost'
+  ? ''
+  : 'https://testlibrary-2.onrender.com';
 
 /**
  * Centralized fetch wrapper.
