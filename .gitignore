@@ -8,3 +8,4 @@ venv/
 dist/
 .DS_Store
 .claude/
+docs/bug-reports-problem-user.md
